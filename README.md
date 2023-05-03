@@ -46,6 +46,6 @@ classes (below) are never directly referred to in the main function.
 3. Create a class called Item which will serve as a base class for each of the several derived classes for Johnny's merchandise. The classes Book, DVD and CD will inherit this class. The inventory class must maintain
 an array of pointers to Item objects to keep the inventory. Please do not use anything more sophisticated than an array.
 
-#About
+# About
 
 This was a final project for my CS216 at LATTC. It showcases the use of inheritance, polymorphism, and object-oriented programming in C++. Some minimal pointer usage was implemented as well.
