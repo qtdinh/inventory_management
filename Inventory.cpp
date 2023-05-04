@@ -14,27 +14,28 @@ void Inventory::start()
 	switch (menuChoice)
 	{
 	case 1:
-		itemMenu(itemChoice);
+		do {
+			itemMenu(itemChoice);
 			switch (itemChoice)
 			{
-				case 'B':
-					bookInput();
-					break;
-				case 'C':
-					cdInput();
-					break;
-				case 'D':
-					dvdInput();
-					break;
-				case 'M':
-					start();
-					break;
-				default:
-					cout << "Please input one of the options displayed." << endl;
-					itemMenu(itemChoice);
-					break;
+			case 'B':
+				bookInput();
+				break;
+			case 'C':
+				cdInput();
+				break;
+			case 'D':
+				dvdInput();
+				break;
+			case 'M':
+				start();
+				break;
+			default:
+				cout << "Please input one of the options displayed." << endl;
+				break;
 			}
-			break;
+		} while (itemChoice != 'B' && itemChoice != 'C' && itemChoice != 'D' && itemChoice != 'M');
+		break;
 	case 2:
 		orderInput();
 		break;
@@ -63,6 +64,7 @@ void Inventory::itemMenu(char& myChoice)
 	cout << " 4) To return to the main menu, enter M" << endl;
 	cin >> myChoice;
 	myChoice = toupper(myChoice);
+	cin.clear();
 	cin.ignore();
 	cout << endl;
 }
@@ -89,23 +91,23 @@ void Inventory::orderInput()
 		}
 	}
 	if (found) {
-	cout << "Enter the quantity received (0 if none): " << endl;
-	cin >> quantity;
-	while (quantity < 0) {
-		cout << "Must be a non-negative number!" << endl;
+		cout << "Enter the quantity received (0 if none): " << endl;
 		cin >> quantity;
-	}
-	cout << "Enter the cost: " << endl;
-	cin >> cost;
-	while (cost < 0) {
-		cout << "Must be a non-negative number!" << endl;
+		while (quantity < 0) {
+			cout << "Must be a non-negative number!" << endl;
+			cin >> quantity;
+		}
+		cout << "Enter the cost: " << endl;
 		cin >> cost;
-	}
-	cin.ignore();
-	inventory[sku - DEFAULT_SKU]->setQuantity((inventory[sku - DEFAULT_SKU]->getQuantity() + quantity));
-	if (cost != inventory[sku - DEFAULT_SKU]->getCost())
-		inventory[sku - DEFAULT_SKU]->setCost(cost);
-	cout << "Your order has been received." << endl;
+		while (cost < 0) {
+			cout << "Must be a non-negative number!" << endl;
+			cin >> cost;
+		}
+		cin.ignore();
+		inventory[sku - DEFAULT_SKU]->setQuantity((inventory[sku - DEFAULT_SKU]->getQuantity() + quantity));
+		if (cost != inventory[sku - DEFAULT_SKU]->getCost())
+			inventory[sku - DEFAULT_SKU]->setCost(cost);
+		cout << "Your order has been received." << endl;
 	}
 	else {
 		cout << "Item with SKU not found." << endl;
@@ -252,7 +254,7 @@ void Inventory::sale()
 				}
 				else
 					inventory[i]->setQuantity(inventory[i]->getQuantity() - quantity);
-					skuSold[inventory[i]->getSKU() - DEFAULT_SKU] += quantity;
+				skuSold[inventory[i]->getSKU() - DEFAULT_SKU] += quantity;
 			}
 		}
 
@@ -273,13 +275,13 @@ void Inventory::sale()
 			total += inventory[i]->getPrice() * skuSold[i];
 			printReceipt(inventory[i]->getSKU(), skuSold[i], inventory[i]->getPrice(), total, inventory[i]->getShortage());
 		}
-	}	
+	}
 
 	if (found) {
 		subtotal = total * (1 + SALES_TAX);
 		tax = total * SALES_TAX;
 		cout << "Total " << setw(32) << "$" << total << endl;
-		cout << "Tax "  << setw(34) << "$" << tax << endl;
+		cout << "Tax " << setw(34) << "$" << tax << endl;
 		cout << "Subtotal " << setw(29) << "$" << subtotal << endl;
 	}
 	start();
